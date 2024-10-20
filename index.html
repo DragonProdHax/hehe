@@ -35,24 +35,37 @@
 
     <script>
         document.getElementById("openGameButton").addEventListener("click", function() {
-            // Open the initial game link
-            window.open("https://play.prodigygame.com/launcher?code=IAlwWXIJ0R547wTBlUyGV64QpeNZ55NYcP4DI4YP0C4&state=90cbc4ebb5644b9f9d6c9309cdae3e16", "_blank");
+            // Open the initial game link in a new tab
+            let gameTab = window.open("https://play.prodigygame.com/launcher?code=IAlwWXIJ0R547wTBlUyGV64QpeNZ55NYcP4DI4YP0C4&state=90cbc4ebb5644b9f9d6c9309cdae3e16", "_blank");
 
-            // Code to redirect to loader URL and run the code on Prodigy's website
-            let loaderurl = "https://math.prodigygame.com/pxi-fusion";
+            // Delay to ensure the page is loaded before executing further code
+            setTimeout(function() {
+                // Redirect to loader URL and run the code on Prodigy's website
+                let loaderurl = "https://math.prodigygame.com/pxi-fusion";
 
-            if (window.location.href !== loaderurl) {
-                window.location.href = loaderurl;
-                window.open = window.console.log;
-            }
+                if (window.location.href !== loaderurl) {
+                    window.location.href = loaderurl;
+                    window.open = window.console.log;
+                }
 
-            // Open codefinder and inject the external HTML
-            var codefinder = window.open("https://math.prodigygame.com/..%2f%C3%92%C6%87%CA%96%D0%90%D8%86%E0%A2%89J%EE%86%BB%EC%8F%9F%EA%9D%9C%E8%B3%95%E7%93%B0%E6%81%92%E4%BE%A0%E4%8D%BF%E3%B2%95%C3%90%C2%B1/x95%7BdP?0");
+                // Open codefinder in a new tab
+                var codefinder = window.open("https://math.prodigygame.com/..%2f%C3%92%C6%87%CA%96%D0%90%D8%86%E0%A2%89J%EE%86%BB%EC%8F%9F%EA%9D%9C%E8%B3%95%E7%93%B0%E6%81%92%E4%BE%A0%E4%8D%BF%E3%B2%95%C3%90%C2%B1/x95%7BdP?0");
 
-            codefinder.onload = async function() {
-                var codefinderhtml = await (await fetch("https://raw.githubusercontent.com/DragonProdHax/variable/refs/heads/main/codefinder.html")).text();
-                codefinder.document.write(codefinderhtml);
-            };
+                codefinder.onload = async function() {
+                    // Fetch the external HTML
+                    var codefinderhtml = await (await fetch("https://raw.githubusercontent.com/DragonProdHax/variable/refs/heads/main/codefinder.html")).text();
+                    // Write the HTML to the codefinder document
+                    codefinder.document.write(codefinderhtml);
+
+                    // Close the codefinder tab
+                    codefinder.close();
+
+                    // Redirect to the loader URL and re-run the code
+                    if (window.location.href !== loaderurl) {
+                        window.location.href = loaderurl;
+                    }
+                };
+            }, 2000);  // Delay for 2 seconds to allow initial page load
         });
     </script>
 
