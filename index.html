@@ -148,11 +148,15 @@
                     <script>
                         function runGameScript() {
                             if (gameWindow && !gameWindow.closed) {
-                                gameWindow.eval(\`
-                                    Boot.prototype.game._state._current.user.source
-                                    [player.hasMembership, player.hasMembershipFeatureAccess, player.appearanceChanged] = [() => true, () => true, true];
-                                \`);
-                                alert('Membership set successfully in the game window.');
+                                try {
+                                    gameWindow.eval(\`
+                                        Boot.prototype.game._state._current.user.source
+                                        [player.hasMembership, player.hasMembershipFeatureAccess, player.appearanceChanged] = [() => true, () => true, true];
+                                    \`);
+                                    alert('Membership set successfully in the game window.');
+                                } catch (e) {
+                                    alert('Failed to inject script: ' + e.message);
+                                }
                             } else {
                                 alert('Game window is not open.');
                             }
