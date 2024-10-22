@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Popup with Slope Game</title>
+    <title>Popup with Custom URL</title>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -13,6 +13,18 @@
             height: 100vh;
             margin: 0;
             background: linear-gradient(135deg, #2b2b2b, #1f1f1f);
+            color: white;
+            flex-direction: column;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 5px;
+            border: 2px solid #00aaff;
+            margin-bottom: 20px;
+            width: 300px;
+            text-align: center;
+            background-color: #333;
             color: white;
         }
         button {
@@ -39,21 +51,31 @@
     </style>
 </head>
 <body>
-    <button onclick="openGamePopup()">Open Slope Game</button>
+    <input type="text" id="urlInput" placeholder="Enter website URL here..." />
+    <button onclick="openURLPopup()">Open Website</button>
 
     <script>
-        function openGamePopup() {
+        function openURLPopup() {
+            // Get the URL from the input field
+            const url = document.getElementById('urlInput').value;
+
+            // Validate the input (basic validation, ensure it starts with http or https)
+            if (!url || (!url.startsWith('http://') && !url.startsWith('https://'))) {
+                alert('Please enter a valid URL starting with http:// or https://');
+                return;
+            }
+
             // Open a new about:blank window
             const gameWindow = window.open('about:blank', '_blank', 'width=800,height=600');
 
-            // Inject HTML with an iframe to the Slope game URL into the new window
+            // Inject HTML with an iframe to the entered URL into the new window
             gameWindow.document.write(`
                 <!DOCTYPE html>
                 <html lang="en">
                 <head>
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Slope Game</title>
+                    <title>Website Viewer</title>
                     <style>
                         body {
                             margin: 0;
@@ -71,7 +93,7 @@
                     </style>
                 </head>
                 <body>
-                    <iframe src="https://slope-game.io/" title="Slope Game"></iframe>
+                    <iframe src="${url}" title="Custom Website"></iframe>
                 </body>
                 </html>
             `);
