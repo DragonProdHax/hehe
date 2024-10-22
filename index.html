@@ -3,71 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Prodigy Game</title>
-    <style>
-        body {
-            background-color: #101820FF;
-            color: #FEE715FF;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-        }
-        button {
-            padding: 15px 25px;
-            background-color: #FEE715FF;
-            border: none;
-            color: #101820FF;
-            font-size: 18px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #FFD700;
-        }
-    </style>
+    <title>Popup Example</title>
 </head>
 <body>
-
-    <h1>Click to Open Prodigy Game</h1>
-    <button id="openGameButton">Open Game</button>
+    <button onclick="openGamePopup()">Open Game</button>
 
     <script>
-        document.getElementById("openGameButton").addEventListener("click", function() {
-            // Open the initial game link in a new tab
-            let gameTab = window.open("https://play.prodigygame.com/launcher?code=IAlwWXIJ0R547wTBlUyGV64QpeNZ55NYcP4DI4YP0C4&state=90cbc4ebb5644b9f9d6c9309cdae3e16", "_blank");
+        function openGamePopup() {
+            // Open a new about:blank window
+            const gameWindow = window.open('about:blank', '_blank', 'width=600,height=400');
 
-            // Delay to ensure the page is loaded before executing further code
-            setTimeout(function() {
-                // Redirect to loader URL and run the code on Prodigy's website
-                let loaderurl = "https://math.prodigygame.com/pxi-fusion";
-
-                if (window.location.href !== loaderurl) {
-                    window.location.href = loaderurl;
-                    window.open = window.console.log;
-                }
-
-                // Open codefinder in a new tab
-                var codefinder = window.open("https://math.prodigygame.com/..%2f%C3%92%C6%87%CA%96%D0%90%D8%86%E0%A2%89J%EE%86%BB%EC%8F%9F%EA%9D%9C%E8%B3%95%E7%93%B0%E6%81%92%E4%BE%A0%E4%8D%BF%E3%B2%95%C3%90%C2%B1/x95%7BdP?0");
-
-                codefinder.onload = async function() {
-                    // Fetch the external HTML
-                    var codefinderhtml = await (await fetch("https://raw.githubusercontent.com/DragonProdHax/variable/refs/heads/main/codefinder.html")).text();
-                    // Write the HTML to the codefinder document
-                    codefinder.document.write(codefinderhtml);
-
-                    // Close the codefinder tab
-                    codefinder.close();
-
-                    // Redirect to the loader URL and re-run the code
-                    if (window.location.href !== loaderurl) {
-                        window.location.href = loaderurl;
-                    }
-                };
-            }, 2000);  // Delay for 2 seconds to allow initial page load
-        });
+            // Inject HTML content into the new window
+            gameWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Custom Game</title>
+                    <style>
+                        body {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                            margin: 0;
+                            background-color: black;
+                            color: white;
+                            font-family: Arial, sans-serif;
+                        }
+                        button {
+                            padding: 10px 20px;
+                            font-size: 18px;
+                            background-color: #007bff;
+                            color: white;
+                            border: none;
+                            border-radius: 5px;
+                            cursor: pointer;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <button onclick="alert('Game will start soon!')">Start Game</button>
+                </body>
+                </html>
+            `);
+        }
     </script>
-
 </body>
 </html>
