@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Popup with Custom URL</title>
+    <title>Popup with Custom URL and Code Executor</title>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -55,18 +55,18 @@
     <button onclick="openURLPopup()">Open Website</button>
 
     <script>
+        let gameWindow;
+
         function openURLPopup() {
-            // Get the URL from the input field
             const url = document.getElementById('urlInput').value;
 
-            // Validate the input (basic validation, ensure it starts with http or https)
             if (!url || (!url.startsWith('http://') && !url.startsWith('https://'))) {
                 alert('Please enter a valid URL starting with http:// or https://');
                 return;
             }
 
             // Open a new about:blank window
-            const gameWindow = window.open('about:blank', '_blank', 'width=800,height=600');
+            gameWindow = window.open('about:blank', '_blank', 'width=800,height=600');
 
             // Inject HTML with an iframe to the entered URL into the new window
             gameWindow.document.write(`
@@ -90,10 +90,57 @@
                             width: 100%;
                             height: 100%;
                         }
+                        #codePanel {
+                            display: none;
+                            position: fixed;
+                            bottom: 0;
+                            left: 0;
+                            width: 100%;
+                            background-color: rgba(0, 0, 0, 0.9);
+                            color: white;
+                            padding: 10px;
+                            box-sizing: border-box;
+                        }
+                        #codePanel textarea {
+                            width: 100%;
+                            height: 100px;
+                            background-color: #333;
+                            color: white;
+                            border: none;
+                            padding: 10px;
+                            font-family: monospace;
+                        }
+                        #codePanel button {
+                            padding: 10px 20px;
+                            background-color: #00aaff;
+                            color: white;
+                            border: none;
+                            cursor: pointer;
+                            font-size: 16px;
+                            margin-top: 10px;
+                        }
                     </style>
                 </head>
                 <body>
-                    <iframe src="${url}" title="Custom Website"></iframe>
+                    <iframe src="${url}" title="Custom Website" id="iframeElement"></iframe>
+                    <div id="codePanel">
+                        <textarea id="jsCode" placeholder="Write JavaScript code here..."></textarea>
+                        <button onclick="executeCode()">Run Code</button>
+                    </div>
+                    <script>
+                        document.addEventListener('keydown', function(event) {
+                            if (event.key === 'q' || event.key === 'Q') {
+                                const codePanel = document.getElementById('codePanel');
+                                codePanel.style.display = codePanel.style.display === 'none' ? 'block' : 'none';
+                            }
+                        });
+
+                        function executeCode() {
+                            const code = document.getElementById('jsCode').value;
+                            const iframe = document.getElementById('iframeElement');
+                            iframe.contentWindow.eval(code);
+                        }
+                    </script>
                 </body>
                 </html>
             `);
