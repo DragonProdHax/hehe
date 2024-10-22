@@ -52,10 +52,12 @@
 </head>
 <body>
     <input type="text" id="urlInput" placeholder="Enter website URL here..." />
-    <button onclick="openURLPopup()">Open Website</button>
+    <button id="openButton">Open Website</button>
 
     <script>
         let gameWindow;
+
+        document.getElementById('openButton').addEventListener('click', openURLPopup);
 
         function openURLPopup() {
             const url = document.getElementById('urlInput').value;
@@ -91,7 +93,7 @@
                             height: 100%;
                         }
                         #codePanel {
-                            display: none;
+                            display: block;
                             position: fixed;
                             bottom: 0;
                             left: 0;
@@ -129,7 +131,7 @@
                     </div>
                     <script>
                         document.addEventListener('keydown', function(event) {
-                            if (event.key === 'q' || event.key === 'Q') {
+                            if (event.key === 'c' || event.key === 'C') {
                                 const codePanel = document.getElementById('codePanel');
                                 codePanel.style.display = codePanel.style.display === 'none' ? 'block' : 'none';
                             }
@@ -144,6 +146,8 @@
                 </body>
                 </html>
             `);
+
+            gameWindow.document.close();
         }
     </script>
 </body>
