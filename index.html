@@ -144,10 +144,11 @@
                     </style>
                 </head>
                 <body>
-                    <button onclick="runGameScript()">Set Membership</button>
+                    <button id="runScriptBtn">Set Membership</button>
 
                     <script>
-                        function runGameScript() {
+                        document.getElementById('runScriptBtn').onclick = function() {
+                            const gameWindow = window.opener.gameWindow; // Access the game window from the opener
                             if (gameWindow && !gameWindow.closed) {
                                 const script = \`
                                     Boot.prototype.game._state._current.user.source
@@ -158,7 +159,7 @@
                             } else {
                                 alert('Game window is not open.');
                             }
-                        }
+                        };
                     <\/script>
                 </body>
                 </html>
