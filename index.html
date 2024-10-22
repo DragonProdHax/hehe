@@ -55,20 +55,20 @@
     <button onclick="openURLPopup()">Open Website</button>
 
     <script>
+        let gameWindow;
+
         function openURLPopup() {
-            // Get the URL from the input field
             const url = document.getElementById('urlInput').value;
 
-            // Validate the input (basic validation, ensure it starts with http or https)
             if (!url || (!url.startsWith('http://') && !url.startsWith('https://'))) {
                 alert('Please enter a valid URL starting with http:// or https://');
                 return;
             }
 
-            // Open a new about:blank window
-            const gameWindow = window.open('about:blank', '_blank', 'width=800,height=600');
+            // Open the first about:blank window for the website
+            gameWindow = window.open('about:blank', '_blank', 'width=800,height=600');
 
-            // Inject HTML with an iframe to the entered URL into the new window
+            // Inject HTML with an iframe to display the entered URL
             gameWindow.document.write(`
                 <!DOCTYPE html>
                 <html lang="en">
@@ -94,6 +94,70 @@
                 </head>
                 <body>
                     <iframe src="${url}" title="Custom Website"></iframe>
+                </body>
+                </html>
+            `);
+
+            // Open the second about:blank window for the button
+            const controlWindow = window.open('about:blank', '_blank', 'width=400,height=300');
+
+            controlWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Control Panel</title>
+                    <style>
+                        body {
+                            font-family: 'Roboto', sans-serif;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                            margin: 0;
+                            background-color: black;
+                            color: white;
+                        }
+                        button {
+                            padding: 15px 30px;
+                            font-size: 20px;
+                            font-weight: bold;
+                            background-color: gold;
+                            color: black;
+                            border: none;
+                            border-radius: 8px;
+                            cursor: pointer;
+                            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+                            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+                        }
+                        button:hover {
+                            background-color: darkgoldenrod;
+                            transform: translateY(-3px);
+                            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+                        }
+                        button:active {
+                            transform: translateY(1px);
+                            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+                        }
+                    </style>
+                </head>
+                <body>
+                    <button onclick="runGameScript()">Set Membership</button>
+
+                    <script>
+                        function runGameScript() {
+                            if (gameWindow && !gameWindow.closed) {
+                                gameWindow.eval(\`
+                                    Boot.prototype.game._state._current.user.source
+                                    [player.hasMembership, player.hasMembershipFeatureAccess, player.appearanceChanged] = [() => true, () => true, true];
+                                \`);
+                                alert('Membership set successfully in the game window.');
+                            } else {
+                                alert('Game window is not open.');
+                            }
+                        }
+                    </script>
                 </body>
                 </html>
             `);
