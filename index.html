@@ -71,7 +71,7 @@
             gameWindow = window.open('about:blank', '_blank', 'width=800,height=600');
 
             // Inject HTML with an iframe to the entered URL into the new window
-            gameWindow.document.write(`
+            const newHTML = `
                 <!DOCTYPE html>
                 <html lang="en">
                 <head>
@@ -145,9 +145,11 @@
                     </script>
                 </body>
                 </html>
-            `);
+            `;
 
-            gameWindow.document.close();
+            gameWindow.document.open();  // Ensure document is open
+            gameWindow.document.write(newHTML);  // Write the new HTML content
+            gameWindow.document.close();  // Close the document to finish rendering
         }
     </script>
 </body>
