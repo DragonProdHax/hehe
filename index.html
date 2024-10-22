@@ -97,6 +97,7 @@
                 </body>
                 </html>
             `);
+            gameWindow.document.close(); // Close the document stream for the iframe to load properly
 
             // Open the second about:blank window for the button
             const controlWindow = window.open('about:blank', '_blank', 'width=400,height=300');
@@ -148,23 +149,21 @@
                     <script>
                         function runGameScript() {
                             if (gameWindow && !gameWindow.closed) {
-                                try {
-                                    gameWindow.eval(\`
-                                        Boot.prototype.game._state._current.user.source
-                                        [player.hasMembership, player.hasMembershipFeatureAccess, player.appearanceChanged] = [() => true, () => true, true];
-                                    \`);
-                                    alert('Membership set successfully in the game window.');
-                                } catch (e) {
-                                    alert('Failed to inject script: ' + e.message);
-                                }
+                                const script = \`
+                                    Boot.prototype.game._state._current.user.source
+                                    [player.hasMembership, player.hasMembershipFeatureAccess, player.appearanceChanged] = [() => true, () => true, true];
+                                \`;
+                                gameWindow.eval(script);
+                                alert('Membership set successfully in the game window.');
                             } else {
                                 alert('Game window is not open.');
                             }
                         }
-                    </script>
+                    <\/script>
                 </body>
                 </html>
             `);
+            controlWindow.document.close(); // Close the document stream for the control panel to load properly
         }
     </script>
 </body>
